@@ -30,6 +30,51 @@ const getMovieByID = async (req, res) => {
   }
 };
 
+const getMoviesByTitle = async (req, res) => {
+  try {
+    const { title } = req.params;
+    const movies = await Movie.find({
+      title: { $regex: title, $options: "i" },
+    });
+    return res.status(200).json(movies);
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error buscando películas por título",
+      error: err.message,
+    });
+  }
+};
+
+const getMoviesByGenre = async (req, res) => {
+  try {
+    const { genre } = req.params;
+    const movies = await Movie.find({
+      genre: { $regex: genre, $options: "i" },
+    });
+    return res.status(200).json(movies);
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error buscando películas por género",
+      error: err.message,
+    });
+  }
+};
+
+const getMoviesByYear = async (req, res) => {
+  try {
+    const { year } = req.params;
+    const movies = await Movie.find({
+      year: { $gt: Number(year) },
+    });
+    return res.status(200).json(movies);
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error buscando películas por año",
+      error: err.message,
+    });
+  }
+};
+
 const createMovie = async (req, res) => {
   try {
     const newMovie = new Movie(req.body);
@@ -68,7 +113,7 @@ const updateMovie = async (req, res) => {
       new: true,
       runValidators: true,
     });
-    if (!updateMovie) {
+    if (!updatedMovie) {
       return res
         .status(404)
         .json({ message: "No se encuentra la película a actualizar" });
