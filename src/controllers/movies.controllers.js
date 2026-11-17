@@ -130,6 +130,9 @@ const updateMovie = async (req, res) => {
 module.exports = {
   getMovies,
   getMovieByID,
+  getMoviesByTitle,
+  getMoviesByGenre,
+  getMoviesByYear,
   createMovie,
   deleteMovie,
   updateMovie,
